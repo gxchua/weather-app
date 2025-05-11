@@ -1,0 +1,149 @@
+// Define shared values
+$font-size-small: calc(0.625rem + 0.67vmin);
+$font-size-medium: calc(0.75rem + 0.67vmin);
+$font-size-large: calc(3.5rem + 2.84vmin);
+
+.weatherCard {
+    position: relative;
+    display: flex;
+    color: var(--text-color);
+
+    .title {
+        font-size: $font-size-small;
+        margin: 0;
+        font-weight: bold;
+    }
+
+    .temperature {
+        font-size: $font-size-large;
+        margin: 0;
+        font-weight: bold;
+        line-height: 1;
+        color: var(--temp-color);
+    }
+
+    .description {
+        font-size: $font-size-medium;
+        margin: 0;
+    }
+
+    .minMaxTemp {
+        font-size: $font-size-small;
+        margin: 0;
+        font-weight: bold;
+    }
+
+    .text {
+        font-size: $font-size-small;
+        color: var(--text-description-color)
+    }
+
+    .weather {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+    }
+
+    .details {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        justify-content: space-between;
+        width: 77.5%;
+        flex-wrap: wrap-reverse;
+        text-align: right;
+    }
+
+    .imageWrap {
+        width: 33vmin;
+        height: auto;
+        position: absolute;
+        top: -74%;
+        right: 0;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+    }
+}
+
+
+@media (max-width: 768px) {
+    .weatherCard {
+        .details {
+            display: flex;
+            flex-direction: column-reverse;
+            width: 80%;
+        }
+
+        .imageWrap {
+            width: 35vmin;
+            top: -70%;
+        }
+    }
+}
+
+@media (max-width: 600px) {
+    .weatherCard .imageWrap {
+        width: 38vmin;
+        top: -65%;
+        right: -5%;
+    }
+}
+
+@media (max-width: 431px) {
+    .weatherCard .imageWrap {
+        width: 45vmin;
+        top: -84%;
+        right: -10%;
+    }
+}
+
+/* Styles for Full HD*/
+@media (min-width: 1080px) and (orientation: portrait) {
+    .weatherCard .imageWrap {
+        width: 30vmin;
+    }
+}
+
+@media (min-width: 1920px) {
+    .weatherCard .imageWrap {
+        width: 30vmin;
+    }
+}
+
+/* Styles for 4K and larger */
+/* Landscape large screens like 2560 x 1440 */
+@media (min-width: 1440px) and (orientation: portrait) {
+    .weatherCard .imageWrap {
+        width: 24vmin;
+    }
+}
+
+@media (min-width: 2560px) {
+    .weatherCard .imageWrap {
+        width: 24vmin;
+    }
+}
+
+@media (min-width: 2160px) and (orientation: portrait) {
+    .weatherCard .imageWrap {
+        width: 18vmin;
+    }
+}
+
+@media (min-width: 3840px) {
+    .weatherCard .imageWrap {
+        width: 18vmin;
+    }
+}
+
+//For mobile landscape mode, where the device has a height less than 600px
+@media (max-height: 600px) and (orientation: landscape) {
+    .weatherCard .imageWrap {
+        width: 46vmin;
+    }
+}
