@@ -1,0 +1,49 @@
+.searchHistoryCard {
+    height: 51vh; // 100vh - 32px - 60px - 15vh - card portion
+    background-color: var(--card-bg);
+    border-radius: 2rem;
+    padding: 1.5rem 0;
+    margin-top: 1.5rem;
+
+    .title {
+        font-size: calc(0.5rem + 0.88vmin);
+        margin: 0 0 1rem 0;
+        padding: 0 1.5rem;
+    }
+
+    .listContainer {
+        overflow: auto;
+
+        .listWrap {
+            padding: 0 1.5rem;
+        }
+    }
+
+    .listFirstColumn {
+        width: 80%;
+
+        .columnContent {
+            display: flex;
+            justify-content: space-between;
+            padding-right: 5%;
+        }
+    }
+
+    .listButtonColumn {
+        width: 10%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .subButton {
+        border-radius: 50%;
+        height: 34px;
+        width: 34px;
+        padding: 0;
+        background-color: var(--sub-button-bg);
+        box-shadow: 0 4px 12px 0px grey;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}

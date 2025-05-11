@@ -1,0 +1,7 @@
+{
+   "name": "Weather Application",
+   "id": "weather.react.ts.gx",
+   "description": "A weather application that displays weather data for different countries",
+   "thumbnail": "thumbnail.svg",
+   "developer": "Gx"
+}

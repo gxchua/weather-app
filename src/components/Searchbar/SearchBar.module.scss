@@ -1,0 +1,29 @@
+.searchBar {
+    background-color: var(--search-bar-bg);
+    display: flex;
+    flex-direction: row;
+    height: 60px;
+    border-radius: 1rem;
+    padding: 0.4rem 1rem;
+
+    .clearBtn {
+        color: var(--clear-btn-text-color);
+    }
+
+    .inputWrap {
+        display: flex;
+        flex-direction: column;
+
+        .labelText{
+            font-size: 0.65rem;
+        }
+
+        input {
+            background-color: transparent;
+            outline: none;
+            border: none;
+            height: 100%;
+        }
+    }
+
+}
