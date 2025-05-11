@@ -34,6 +34,7 @@ npm install
 ```
 npm run dev
 ```
+By default, use localhost:5173
 
 ### Production build
 ```
