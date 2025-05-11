@@ -8,22 +8,47 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 
+  --temp-color: #6C40B5;
   --search-bar-bg: rgba(242, 242, 242, 0.2);
   --card-bg: rgba(242, 242, 242, 0.2);
   --list-bg: rgba(242, 242, 242, 0.2);
-  --clear-btn-text-color: black;
+  --label-text: rgba(0, 0, 0, 0.45);
+  --main-search-bg: #6C40B5;
   --sub-button-bg: white;
+  --error-text: red;
+  --app-bg: url("/images/bg-light.png");
+  --text-color: black;
+  --text-description-color: #666666;
+  --text-list-date: black;
+  --close-btn-icon: url("/images/close.svg");
+  --delete-icon: url("/images/delete.svg");
+  --search-icon: url("/images/search.svg");
+
+  --search-icon-white: url("/images/search-white.png");
+  --theme-toggle-icon: url("/images/theme-toggle.svg");
+}
+
+[data-theme='dark'] {
+  --temp-color: #FFFFFF;
+  --search-bar-bg: rgba(26, 26, 26, 0.3);
+  --card-bg: rgba(26, 26, 26, 0.3);
+  --list-bg: rgba(26, 26, 26, 0.5);
+  --sub-button-bg: rgba(0, 0, 0, 0);
+  --label-text: #666666;
+  --main-search-bg: rgba(26, 26, 26, 0.3);
+  --app-bg: url("/images/bg-dark.png");
+  --text-color: white;
+  --text-description-color: white;
+  --text-list-date: #666666;
+  --close-btn-icon: url("/images/close-white.svg");
+  --delete-icon: url("/images/delete-grey.svg");
+  --search-icon: url("/images/search-grey.svg");
 }
 
 * {
   box-sizing: border-box;
 }
 
-
-[data-theme='dark'] {
-  --bg-color: black;
-  --text-color: white;
-}
 
 body {
   margin: 0;
@@ -39,13 +64,10 @@ h1 {
 }
 
 button {
-  border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
 }

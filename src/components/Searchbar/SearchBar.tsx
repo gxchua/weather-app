@@ -1,14 +1,15 @@
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useState } from "react";
 import styles from './searchbar.module.scss';
 
 type SearchBarProps = {
     id: string
     label: string
     onChange: (val: string) => void
+    onEnter?: (val: string) => void;
     className?: string // Allow passing custom class for styling
 }
 
-const SearchBar = ({ id, label, onChange, className }: SearchBarProps): ReactNode => {
+const SearchBar = ({ id, label, onChange, onEnter, className }: SearchBarProps): ReactNode => {
     const [value, setValue] = useState<string>("");
 
     const updateInput = (text: string): void => {
@@ -23,14 +24,25 @@ const SearchBar = ({ id, label, onChange, className }: SearchBarProps): ReactNod
         updateInput("");
     }
 
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter" && onEnter) {
+            onEnter(value);
+        }
+    };
+
     return (
         <div className={`${styles.searchBar} ${className || ''}`}>
             <div className={styles.inputWrap}>
                 <label htmlFor={id} className={styles.labelText}>{label}</label>
-                <input type="text" onChange={(e) => updateInput(e.target.value)} value={value} id={id}></input>
+                <input
+                    type="text"
+                    onChange={(e) => updateInput(e.target.value)}
+                    value={value}
+                    id={id}
+                    onKeyDown={handleKeyDown}></input>
             </div>
 
-            <span className={styles.clearBtn} onClick={onClearBtnClicked}>X</span>
+            {value && <button className={styles.clearBtn} onClick={onClearBtnClicked}></button>}
         </div>
     )
 }

@@ -1,18 +1,40 @@
+$main-padding: 1.5rem;
+$card-radius: 2rem;
+$title-font-size: calc(0.75rem + 0.67vmin);
+$title-padding: 0 $main-padding;
+$list-padding: 0 $main-padding;
+$sub-button-size: 34px;
+
 .searchHistoryCard {
-    height: 51vh; // 100vh - 32px - 60px - 15vh - card portion
+    height: calc(100% - #{$main-padding} - 21vh); // Subtract margin and weather card height
     background-color: var(--card-bg);
-    border-radius: 2rem;
-    padding: 1.5rem 0;
-    margin-top: 1.5rem;
+    border-top-left-radius: $card-radius;
+    border-top-right-radius: $card-radius;
+    padding: $main-padding 0 0.5rem 0;
+    margin-top: $main-padding;
+    flex: 1;
 
     .title {
-        font-size: calc(0.5rem + 0.88vmin);
+        font-size: $title-font-size;
         margin: 0 0 1rem 0;
-        padding: 0 1.5rem;
+        padding: $title-padding;
+        font-weight: bold;
+        color: var(--text-color);
     }
 
     .listContainer {
         overflow: auto;
+        height: calc(100% - #{$main-padding} - #{$title-font-size});
+        //Hide scroll bar
+        -ms-overflow-style: none;
+        /* Internet Explorer 10+ */
+        scrollbar-width: none;
+        /* Firefox */
+
+        .container::-webkit-scrollbar {
+            /* Safari and Chrome */
+            display: none;
+        }
 
         .listWrap {
             padding: 0 1.5rem;
@@ -26,6 +48,16 @@
             display: flex;
             justify-content: space-between;
             padding-right: 5%;
+
+            .name {
+                font-size: 1rem;
+                color: var(--text-color)
+            }
+
+            .date {
+                font-size: 0.875rem;
+                color: var(--text-list-date);
+            }
         }
     }
 
@@ -37,13 +69,94 @@
 
     .subButton {
         border-radius: 50%;
-        height: 34px;
-        width: 34px;
+        height: $sub-button-size;
+        width: $sub-button-size;
         padding: 0;
-        background-color: var(--sub-button-bg);
-        box-shadow: 0 4px 12px 0px grey;
         display: flex;
         justify-content: center;
         align-items: center;
+        flex-shrink: 0;
+        background-color: var(--sub-button-bg);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-color: transparent;
+        box-shadow: 0 4px 12px 0px grey;
+    }
+
+    .delete {
+        background-image: var(--delete-icon);
+    }
+
+    .search {
+        background-image: var(--search-icon);
+    }
+}
+
+[data-theme='dark'] .searchHistoryCard {
+    .subButton {
+        box-shadow: none;
+        border: 1px solid var(--text-list-date);
+    }
+}
+
+
+@media (max-width: 600px) {
+    .searchHistoryCard {
+        .listFirstColumn {
+            width: 70%;
+        }
+
+        .listButtonColumn {
+            width: 15%;
+        }
+    }
+}
+
+@media (max-width: 561px) {
+    .searchHistoryCard {
+        .listFirstColumn {
+            width: 65%;
+
+            .columnContent {
+                flex-direction: column;
+            }
+        }
+
+        .listButtonColumn {
+            width: 17.5%;
+        }
+    }
+}
+
+@media (max-width: 431px) {
+    .searchHistoryCard {
+        .listFirstColumn {
+            width: 57.5%;
+
+            .columnContent {
+                .name {
+                    font-size: 0.875rem;
+                }
+
+                .date {
+                    font-size: 0.625rem;
+                }
+            }
+        }
+
+        .listButtonColumn {
+            width: 21.25%;
+        }
+    }
+}
+
+//Cater for mobile landscape mode, where the device has a height less than 600px
+@media (max-height: 600px) and (orientation: landscape) {
+    .searchHistoryCard {
+        height: auto !important;
+
+        .listContainer {
+            height: auto !important;
+        }
     }
 }

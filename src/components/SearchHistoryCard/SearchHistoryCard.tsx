@@ -11,7 +11,7 @@ type SearchHistoryProp = {
     onListSearchClicked: (query: string) => void
 }
 
-//Define the config here, and pass it to the list component
+//Define the config of the list here, and pass it to the list component
 const setListConfig = (
     data: ProcessedWeatherData,
     onDelete: (id: string) => void,
@@ -19,34 +19,28 @@ const setListConfig = (
 
     return [{
         item: <div className={styles.columnContent}>
-            <span>{`${data.name}, ${data.countryCode}`}</span>
-            <span>{`${dateTimeFormattingUtil.formatUtcString(data.utcTimeStamp, DateTimeFormats.SHORT_DAY_FIRST_12_HOURS)}`}</span>
+            <span className={styles.name}>{`${data.name}, ${data.countryCode}`}</span>
+            <span className={styles.date}>{`${dateTimeFormattingUtil.formatUtcString(data.utcTimeStamp, DateTimeFormats.SHORT_DAY_FIRST_12_HOURS)}`}</span>
         </div>,
         class: styles.listFirstColumn
     },
     {
-        item: <button className={styles.subButton} onClick={() => onSearchClicked(data.name)}>
-            <img src="images/search.png"></img>
-        </button>,
+        item: <button className={`${styles.subButton} ${styles.search}`} onClick={() => onSearchClicked(data.name)}>  </button>,
         class: styles.listButtonColumn
     },
     {
-        item: <button className={styles.subButton} onClick={() => onDelete(data.id)}>
-            <img src="images/delete.png"></img>
-        </button>,
+        item: <button className={`${styles.subButton} ${styles.delete}`} onClick={() => onDelete(data.id)}> </button>,
         class: styles.listButtonColumn
     }]
 }
 
 const SearchHistoryCard = ({ historyData, onListDeleteClicked, onListSearchClicked }: SearchHistoryProp) => {
-    //32px+ 15vh + 2.5rem + 194.46 (can change) + 60px?
-    //--> pass in method api screen sizes. theme and unit test last
     return (
         <div className={styles.searchHistoryCard}>
-            <h5 className={styles.title}>Search History</h5>
+            <div className={styles.title}>Search History</div>
             <div className={styles.listContainer}>
                 <div className={styles.listWrap}>
-                    {historyData.map((dt) => <List id={dt.id} config={setListConfig(dt, onListDeleteClicked, onListSearchClicked)} />)}
+                    {historyData.map((dt, index) => <List key={`${dt.id}-${index}`} id={dt.id} config={setListConfig(dt, onListDeleteClicked, onListSearchClicked)} />)}
                 </div>
             </div>
         </div>

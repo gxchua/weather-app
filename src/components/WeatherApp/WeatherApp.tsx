@@ -2,31 +2,46 @@
 import { SearchBar, SearchHistoryCard, WeatherCard } from "@/components";
 import { useRef, useState, useEffect } from "react";
 import { weatherApiService, weatherDataService, cacheService } from "@/services";
+import { LocalStorageKeys } from "@/constants";
 import { ProcessedWeatherData } from "@/models";
 import styles from './WeatherApp.module.scss';
 
+const Themes = {
+    dark: "dark",
+    light: "light"
+}
+
 const WeatherApp = () => {
     const searchInput = useRef<string>("");
+    const [theme, setTheme] = useState<string>("");
     const [currentData, setCurrentData] = useState<ProcessedWeatherData | null>(null);
     const [historicalData, setHistoricalData] = useState<ProcessedWeatherData[]>([]);
     const [showError, setErrorMessage] = useState<string>("");
 
     useEffect(() => {
-        const cache = cacheService.retrieveDataFromLocalStorage();
-        if (cache) {
-            setHistoricalData(JSON.parse(cache));
-        }
+        retrieveCacheData();
     }, [])
 
-    const onInputChanged = (val: string): void => {
-        searchInput.current = val;
-        console.log(searchInput)
-    }
+    useEffect(() => {
+        //Set the document theme attribute
+        if (!theme) return;
+        document.documentElement.setAttribute('data-theme', theme);
+        //Stores the updated theme value to local storage
+        cacheService.setStringToStorage(theme, LocalStorageKeys.themeKey);
+    }, [theme])
 
-    const storeAndUpdateSearchHistory = (data: ProcessedWeatherData): void => {
-        const latestList: ProcessedWeatherData[] = [data, ...historicalData];
-        setHistoricalData(latestList);
-        cacheService.setDataToLocalStorage(latestList);
+    //Retrieve the search history and theme data from local storage
+    const retrieveCacheData = (): void => {
+        const historicalData: string | null = cacheService.retrieveDataFromLocalStorage(LocalStorageKeys.dataKey);
+        const theme: string | null = cacheService.retrieveDataFromLocalStorage(LocalStorageKeys.themeKey);
+
+        if (historicalData) {
+            setHistoricalData(JSON.parse(historicalData));
+        }
+
+        if (theme) {
+            setTheme(theme);
+        }
     }
 
     const onSearchClicked = async (query: string = ""): Promise<void> => {
@@ -42,9 +57,27 @@ const WeatherApp = () => {
             }
         }
         catch (err) {
-            setErrorMessage("Failed to retrieve weather data.")
+            console.error(err);
+            setErrorMessage("Failed to retrieve weather data.");
+            //Remove the error message after 3 seconds
+            setTimeout(() => setErrorMessage(""), 3000);
         }
     };
+
+    //Integrate the enter key for search
+    const onEnter = (value: string): void => {
+        onSearchClicked(value);
+    }
+
+    const storeAndUpdateSearchHistory = (data: ProcessedWeatherData): void => {
+        const latestList: ProcessedWeatherData[] = [data, ...historicalData];
+        setHistoricalData(latestList);
+        cacheService.setDataToLocalStorage(latestList, LocalStorageKeys.dataKey);
+    }
+
+    const onInputChanged = (val: string): void => {
+        searchInput.current = val;
+    }
 
     const onListDeleted = (id: string): void => {
         const itemIndex = historicalData.findIndex((dt: ProcessedWeatherData) => dt.id === id);
@@ -53,22 +86,25 @@ const WeatherApp = () => {
             const updatedLists = [...historicalData];
             updatedLists.splice(itemIndex, 1);
             setHistoricalData(updatedLists);
-            cacheService.setDataToLocalStorage(updatedLists)
+            cacheService.setDataToLocalStorage(updatedLists, LocalStorageKeys.dataKey);
         }
     }
 
-    console.log(currentData)
+    const toggleTheme = (): void => {
+        setTheme(prev => prev === Themes.light ? Themes.dark : Themes.light);
+    }
 
     return (
         <div className={styles.weatherApp}>
             <div className={styles.weatherAppWrap}>
                 <div className={styles.header}>
-                    <SearchBar onChange={onInputChanged} id="weathersearch" label="City or Country" />
-                    <button onClick={() => onSearchClicked()}>Search</button>
+                    <SearchBar onChange={onInputChanged} onEnter={onEnter} id="weathersearch" label="City or Country" className={styles.searchBarCustomClass} />
+                    <button className={`${styles.searchButton} ${styles.mainButton}`} onClick={() => onSearchClicked()}></button>
+                    <button className={`${styles.mainButton} ${styles.themeToggle}`} onClick={toggleTheme}></button>
                 </div>
-                {showError && <div>The country or city is invalid</div>}
+                {showError && <span className={styles.error}>The country or city is invalid</span>}
                 <div className={styles.content}>
-                    {currentData && <WeatherCard data={currentData} />}
+                    <WeatherCard data={currentData} />
                     <SearchHistoryCard historyData={historicalData} onListDeleteClicked={onListDeleted} onListSearchClicked={onSearchClicked} />
                 </div>
             </div>
